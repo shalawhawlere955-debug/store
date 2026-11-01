@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کۆگای بیناسازی | متجر مواد البناء</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap');
+        * { font-family: 'Vazirmatn', sans-serif; }
+        
+        #splash-screen {
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-slate-950 pb-16">
+
+    <!-- Clean & Professional Splash Screen -->
+    <div id="splash-screen" class="fixed inset-0 bg-slate-950 z-[100] flex flex-col items-center justify-center p-6 text-center">
+        <div class="relative mb-4">
+            <div class="absolute -inset-4 bg-amber-500/20 rounded-full blur-xl animate-pulse"></div>
+            <div class="relative w-20 h-20 rounded-3xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center shadow-2xl shadow-amber-500/40">
+                <i class="fa-solid fa-store text-slate-950 text-3xl"></i>
+            </div>
+        </div>
+        
+        <h1 class="text-2xl md:text-3xl font-black text-white tracking-wider mb-2">کۆگای بیناسازی</h1>
+        <p class="text-xs md:text-sm text-amber-400 font-medium mb-6">متجر مواد البناء والأدوات الإنشائية</p>
+        
+        <div class="flex items-center gap-2 bg-slate-900/80 border border-slate-800 px-4 py-2 rounded-full shadow-inner mb-6">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
+            <span class="text-xs text-slate-300">تکایە چاوەڕوان بن، سایتەکە ئامادە دەبێت...</span>
+        </div>
+
+        <div class="w-44 h-1 bg-slate-900 rounded-full overflow-hidden">
+            <div id="splash-progress" class="w-full h-full bg-gradient-to-r from-amber-500 to-yellow-300 transform -translate-x-full transition-transform duration-[3500ms]"></div>
+        </div>
+    </div>
+
+    <!-- Sticky Header & Banner Container -->
+    <div class="sticky top-0 z-50 shadow-2xl">
+        <!-- Header -->
+        <header class="bg-slate-900 border-b border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+                <!-- Logo & Title -->
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center shadow-md shadow-amber-500/20">
+                        <i class="fa-solid fa-store text-slate-950 text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-black tracking-wide text-white" id="main-title">کۆگای بیناسازی</h1>
+                        <p class="text-xs text-amber-400 font-medium" id="sub-title">متجر مواد البناء</p>
+                    </div>
+                </div>
+
+                <!-- Stats & Language & Admin Button -->
+                <div class="flex items-center gap-3 flex-wrap">
+                    <!-- Total Visitors Badge -->
+                    <div class="bg-slate-950/80 border border-slate-800 px-3 py-1.5 rounded-full flex items-center gap-2 text-xs text-slate-300 shadow-inner">
+                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                        <span id="visitor-label">سەردانیکەران:</span>
+                        <span id="visitor-count" class="font-bold text-amber-400">0</span>
+                    </div>
+
+                    <!-- Live Online Visitors Badge -->
+                    <div class="bg-slate-950/80 border border-emerald-500/30 px-3 py-1.5 rounded-full flex items-center gap-2 text-xs text-slate-300 shadow-inner">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                        <span id="live-label">ئێستا لە سایت:</span>
+                        <span id="live-visitors-count" class="font-black text-emerald-400 text-sm">1</span>
+                    </div>
+
+                    <!-- Language Switcher -->
+                    <button onclick="toggleLang()" class="bg-slate-800 hover:bg-slate-700 text-amber-400 px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-700 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-globe"></i>
+                        <span id="lang-btn-text">عربي / کوردی</span>
+                    </button>
+
+                    <!-- Admin Button -->
+                    <button onclick="openAdminLogin()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 px-3.5 py-1.5 rounded-xl text-xs font-black shadow-lg shadow-amber-500/20 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-lock text-[10px]"></i>
+                        <span id="admin-btn-text">بەشی ئەدمین</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Moving Welcome Text -->
+        <div class="bg-amber-500/10 border-b border-amber-500/20 py-2 px-4 overflow-hidden backdrop-blur-md">
+            <marquee behavior="scroll" direction="right" scrollamount="6" class="text-xs md:text-sm text-amber-300 font-medium">
+                <span id="marquee-text">🌟 بەخێربێن بۆ کۆگای بیناسازی • باشترین کوالێتی و گونجاوترین نرخ • تکایە سکریپشۆتی کاڵاکە بگرە یان کۆدەکەی بنێرە بۆ داواکردن | أهلاً بكم في متجر مواد البناء • أفضل جودة وأنسب الأسعار</span>
+            </marquee>
+        </div>
+    </div>
+
+    <!-- Search & Filters -->
+    <div class="max-w-7xl mx-auto w-full px-4 py-6">
+        <div class="flex flex-col md:flex-row gap-3 items-center justify-between mb-6">
+            <div class="relative w-full md:w-96">
+                <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3.5 text-slate-400 text-sm"></i>
+                <input type="text" id="search-input" oninput="filterProducts()" placeholder="گەڕان بە پێی ناوی کاڵا یان کۆد... | البحث..." class="w-full bg-slate-900 border border-slate-800 rounded-xl pr-10 pl-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition">
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <!-- Products will be loaded dynamically -->
+        </div>
+
+        <div id="no-products" class="hidden text-center py-16 text-slate-500">
+            <i class="fa-solid fa-box-open text-4xl mb-3"></i>
+            <p id="no-products-text">هیچ کاڵایەک نەدۆزراوەتەوە</p>
+        </div>
+    </div>
+
+    <!-- Floating Compact WhatsApp Button -->
+    <a href="https://wa.me/9647500780848" target="_blank" class="fixed bottom-5 right-5 z-50 bg-emerald-600 hover:bg-emerald-500 text-white p-3.5 rounded-full shadow-2xl shadow-emerald-900/50 transition duration-300 flex items-center justify-center border-2 border-emerald-400 hover:scale-110 group" title="پەیوەندی لە واتسئاپ">
+        <i class="fa-brands fa-whatsapp text-2xl"></i>
+        <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs group-hover:mr-2 text-xs font-bold transition-all duration-300">واتسئاپ</span>
+    </a>
+
+    <!-- Admin Modal -->
+    <div id="admin-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl relative">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-lock text-amber-400"></i>
+                    <span id="admin-panel-title">بەشی ئەدمین (تەنها بۆ خاوەن کۆگا)</span>
+                </h3>
+                <button onclick="closeAdminModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Login View -->
+            <div id="admin-login-view" class="max-w-sm mx-auto py-8 text-center">
+                <div class="w-14 h-14 bg-amber-500/10 text-amber-400 rounded-2xl flex items-center justify-center mx-auto mb-4 text-xl border border-amber-500/20">
+                    <i class="fa-solid fa-key"></i>
+                </div>
+                <h4 class="text-sm font-bold text-white mb-2">تکایە پاسۆرد بنووسە</h4>
+                <form onsubmit="event.preventDefault(); checkAdminPassword();">
+                    <input type="password" id="admin-pass-input" placeholder="پاسۆرد بنووسە..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white text-center mb-3 focus:outline-none focus:border-amber-500">
+                    <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 rounded-xl text-sm transition">چوونەژورەوە</button>
+                </form>
+                <p id="login-error" class="text-xs text-rose-500 mt-2 hidden">پاسۆردی هەڵەیە!</p>
+            </div>
+
+            <!-- Dashboard View -->
+            <div id="admin-dashboard-view" class="hidden">
+                <!-- Add / Edit Product Form -->
+                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 mb-6">
+                    <h4 class="text-sm font-bold text-amber-400 mb-3" id="form-heading">زیادکردن یان دەستکاریکردنی کاڵا</h4>
+                    <input type="hidden" id="edit-product-id">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">ناوی کاڵا / اسم المنتج</label>
+                            <input type="text" id="p-name" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">نرخ و جۆری دراو / السعر والعملة</label>
+                            <div class="flex gap-2">
+                                <input type="number" step="any" id="p-price" placeholder="نرخ..." class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500">
+                                <select id="p-currency" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-amber-400 font-bold focus:outline-none focus:border-amber-500">
+                                    <option value="$">دۆلار ($)</option>
+                                    <option value="IQD">دینار (IQD)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">کۆد (تەنها ژمارە، ئەگەر بەتاڵ بێت خۆکار دروست دەبێت)</label>
+                            <input type="text" id="p-code" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500" placeholder="بۆ نموونە: 1001">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1">وێنەی کاڵا (فایلی ناو کۆمپیوتەر)</label>
+                            <input type="file" id="p-image-file" accept="image/*" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-300 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-xs text-slate-400 mb-1">زانیاری یان تێبینی / التفاصيل</label>
+                        <textarea id="p-desc" rows="2" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500"></textarea>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="saveProduct()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-5 py-2 rounded-xl text-sm transition" id="save-btn-text">بڵاوکردنەوە / پاشەکەوت</button>
+                        <button onclick="resetForm()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-xl text-sm transition">پاشگەزبوونەوە</button>
+                    </div>
+                </div>
+
+                <!-- Admin Products List -->
+                <div class="flex items-center justify-between mb-3">
+                    <h4 class="text-sm font-bold text-white">بەڕێوەبردنی هەموو کاڵاکان</h4>
+                    <input type="text" id="admin-search" oninput="renderAdminList()" placeholder="گەڕان..." class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white">
+                </div>
+                <div id="admin-products-list" class="space-y-2 max-h-96 overflow-y-auto pr-1">
+                    <!-- Dynamic Admin list -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLang = 'ku';
+        let db = null;
+        let products = [];
+        let tempImageBase64 = "";
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
+                splash.style.visibility = 'hidden';
+            }, 3500);
+
+            setTimeout(() => {
+                document.getElementById('splash-progress').style.transform = 'translateX(0)';
+            }, 100);
+
+            initDB();
+            initVisitorCounter();
+            initLiveVisitors();
+        });
+
+        function initVisitorCounter() {
+            let count = localStorage.getItem("site_visitors_total_v1");
+            if (!count) {
+                count = 1;
+            } else {
+                count = parseInt(count) + 1;
+            }
+            localStorage.setItem("site_visitors_total_v1", count);
+            document.getElementById("visitor-count").innerText = count;
+        }
+
+        function initLiveVisitors() {
+            const visitorId = 'visitor_' + Math.random().toString(36).substring(2) + Date.now();
+            
+            function updateActiveVisitors() {
+                let activeMap = JSON.parse(localStorage.getItem('active_visitors_map') || '{}');
+                const now = Date.now();
+                
+                activeMap[visitorId] = now;
+                
+                let activeCount = 0;
+                let cleanedMap = {};
+                for (let id in activeMap) {
+                    if (now - activeMap[id] < 6000) {
+                        cleanedMap[id] = activeMap[id];
+                        activeCount++;
+                    }
+                }
+                
+                localStorage.setItem('active_visitors_map', JSON.stringify(cleanedMap));
+                if (activeCount < 1) activeCount = 1;
+                
+                document.getElementById('live-visitors-count').innerText = activeCount;
+            }
+
+            updateActiveVisitors();
+            setInterval(updateActiveVisitors, 3000);
+
+            window.addEventListener('beforeunload', () => {
+                let activeMap = JSON.parse(localStorage.getItem('active_visitors_map') || '{}');
+                delete activeMap[visitorId];
+                localStorage.setItem('active_visitors_map', JSON.stringify(activeMap));
+            });
+        }
+
+        function initDB() {
+            const request = indexedDB.open("StoreDB_Total_Live_v1", 1);
+            request.onerror = function(event) {
+                console.error("Database error: " + event.target.errorCode);
+            };
+            request.onsuccess = function(event) {
+                db = event.target.result;
+                loadProducts();
+            };
+            request.onupgradeneeded = function(event) {
+                db = event.target.result;
+                if (!db.objectStoreNames.contains("products")) {
+                    db.createObjectStore("products", { keyPath: "id", autoIncrement: true });
+                }
+            };
+        }
+
+        function loadProducts() {
+            if (!db) return;
+            const transaction = db.transaction(["products"], "readonly");
+            const store = transaction.objectStore("products");
+            const request = store.getAll();
+            request.onsuccess = function(event) {
+                products = event.target.result || [];
+                products.sort((a, b) => b.updatedAt - a.updatedAt);
+                renderProducts();
+                renderAdminList();
+            };
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById("products-grid");
+            const noProd = document.getElementById("no-products");
+            grid.innerHTML = "";
+
+            const query = document.getElementById("search-input").value.toLowerCase().trim();
+            const filtered = products.filter(p => 
+                p.name.toLowerCase().includes(query) || p.code.toLowerCase() === query || (p.desc && p.desc.toLowerCase().includes(query))
+            );
+
+            if (filtered.length === 0) {
+                noProd.classList.remove("hidden");
+                return;
+            } else {
+                noProd.classList.add("hidden");
+            }
+
+            filtered.forEach(p => {
+                const timeAgoText = getTimeAgo(p.updatedAt);
+                const currencySymbol = p.currency || '$';
+                const card = document.createElement("div");
+                card.className = "bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-lg flex flex-col justify-between hover:border-slate-700 transition";
+                card.innerHTML = `
+                    <div>
+                        <div class="relative h-48 bg-slate-950 flex items-center justify-center overflow-hidden">
+                            <img src="${p.image || 'https://via.placeholder.com/400x300?text=No+Image'}" alt="${p.name}" class="w-full h-full object-contain p-2">
+                            <span class="absolute top-2 right-2 bg-slate-950/80 backdrop-blur-md text-amber-400 text-xs font-bold px-2.5 py-1 rounded-lg border border-slate-800">
+                                کۆد: ${p.code}
+                            </span>
+                            <span class="absolute bottom-2 left-2 bg-slate-950/80 backdrop-blur-md text-slate-300 text-[10px] px-2 py-0.5 rounded-md border border-slate-800">
+                                <i class="fa-regular fa-clock ml-1"></i> ${timeAgoText}
+                            </span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-sm text-white mb-1 line-clamp-1">${p.name}</h3>
+                            <p class="text-xs text-slate-400 mb-3 line-clamp-2">${p.desc || ''}</p>
+                            <div class="text-amber-400 font-black text-base">${currencySymbol === '$' ? '$ ' + p.price : p.price + ' IQD'}</div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterProducts() {
+            renderProducts();
+        }
+
+        function getTimeAgo(timestamp) {
+            const seconds = Math.floor((new Date() - timestamp) / 1000);
+            if (seconds < 60) return currentLang === 'ku' ? 'ئێستا' : 'الآن';
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return currentLang === 'ku' ? `پێش ${minutes} خولەک` : `منذ ${minutes} دقيقة`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return currentLang === 'ku' ? `پێش ${hours} کاتژمێر` : `منذ ${hours} ساعة`;
+            const days = Math.floor(hours / 24);
+            return currentLang === 'ku' ? `پێش ${days} ڕۆژ` : `منذ ${days} أيام`;
+        }
+
+        function openAdminLogin() {
+            document.getElementById("admin-modal").classList.remove("hidden");
+            document.getElementById("admin-pass-input").value = "";
+            document.getElementById("login-error").classList.add("hidden");
+            document.getElementById("admin-login-view").classList.remove("hidden");
+            document.getElementById("admin-dashboard-view").classList.add("hidden");
+        }
+
+        function closeAdminModal() {
+            document.getElementById("admin-modal").classList.add("hidden");
+        }
+
+        function checkAdminPassword() {
+            const pass = document.getElementById("admin-pass-input").value.trim();
+            if (pass.toLowerCase() === "mahmud123") {
+                document.getElementById("admin-login-view").classList.add("hidden");
+                document.getElementById("admin-dashboard-view").classList.remove("hidden");
+                renderAdminList();
+            } else {
+                document.getElementById("login-error").classList.remove("hidden");
+            }
+        }
+
+        document.getElementById('p-image-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) {
+                    tempImageBase64 = uploadEvent.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function saveProduct() {
+            const id = document.getElementById("edit-product-id").value;
+            const name = document.getElementById("p-name").value.trim();
+            const price = parseFloat(document.getElementById("p-price").value);
+            const currency = document.getElementById("p-currency").value;
+            let code = document.getElementById("p-code").value.trim();
+            const desc = document.getElementById("p-desc").value.trim();
+
+            if (!name || isNaN(price)) {
+                alert("تکایە ناوی کاڵا و نرخ بە دروستی بنووسە!");
+                return;
+            }
+
+            if (!code) {
+                code = Math.floor(1000 + Math.random() * 9000).toString();
+            }
+
+            const existingImage = id ? (products.find(item => item.id == id)?.image || '') : '';
+            const finalImage = tempImageBase64 || existingImage;
+
+            const transaction = db.transaction(["products"], "readwrite");
+            const store = transaction.objectStore("products");
+
+            const productData = {
+                name,
+                price,
+                currency,
+                code,
+                image: finalImage,
+                desc,
+                updatedAt: new Date().getTime()
+            };
+
+            if (id) {
+                productData.id = parseInt(id);
+                store.put(productData);
+            } else {
+                store.add(productData);
+            }
+
+            transaction.oncomplete = function() {
+                resetForm();
+                loadProducts();
+            };
+        }
+
+        function resetForm() {
+            document.getElementById("edit-product-id").value = "";
+            document.getElementById("p-name").value = "";
+            document.getElementById("p-price").value = "";
+            document.getElementById("p-code").value = "";
+            document.getElementById("p-image-file").value = "";
+            document.getElementById("p-desc").value = "";
+            tempImageBase64 = "";
+            document.getElementById("form-heading").innerText = "زیادکردن یان دەستکاریکردنی کاڵا";
+        }
+
+        function renderAdminList() {
+            const list = document.getElementById("admin-products-list");
+            list.innerHTML = "";
+            const query = (document.getElementById("admin-search")?.value || "").toLowerCase();
+
+            const filtered = products.filter(p => 
+                p.name.toLowerCase().includes(query) || p.code.toLowerCase().includes(query)
+            );
+
+            filtered.forEach(p => {
+                const currencySymbol = p.currency || '$';
+                const item = document.createElement("div");
+                item.className = "bg-slate-900 p-3 rounded-xl border border-slate-800 flex items-center justify-between gap-3";
+                item.innerHTML = `
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <img src="${p.image || 'https://via.placeholder.com/100'}" class="w-10 h-10 rounded-lg object-contain bg-slate-950 flex-shrink-0">
+                        <div class="overflow-hidden">
+                            <h5 class="text-xs font-bold text-white truncate">${p.name}</h5>
+                            <p class="text-[10px] text-amber-400">کۆد: ${p.code} | ${currencySymbol === '$' ? '$ ' + p.price : p.price + ' IQD'}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                        <button onclick="editProduct(${p.id})" class="bg-slate-800 hover:bg-slate-700 text-amber-400 p-2 rounded-lg text-xs transition"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteProduct(${p.id})" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 p-2 rounded-lg text-xs transition"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function editProduct(id) {
+            const p = products.find(item => item.id === id);
+            if (!p) return;
+            document.getElementById("edit-product-id").value = p.id;
+            document.getElementById("p-name").value = p.name;
+            document.getElementById("p-price").value = p.price;
+            document.getElementById("p-currency").value = p.currency || '$';
+            document.getElementById("p-code").value = p.code;
+            document.getElementById("p-desc").value = p.desc;
+            tempImageBase64 = p.image;
+            document.getElementById("form-heading").innerText = "دەستکاریکردنی کاڵا: " + p.name;
+        }
+
+        function deleteProduct(id) {
+            if (!confirm("دڵنیایت لە سڕینەوەی ئەم کاڵایە؟")) return;
+            const transaction = db.transaction(["products"], "readwrite");
+            const store = transaction.objectStore("products");
+            store.delete(id);
+            transaction.oncomplete = function() {
+                loadProducts();
+            };
+        }
+
+        function toggleLang() {
+            currentLang = currentLang === 'ku' ? 'ar' : 'ku';
+            if (currentLang === 'ar') {
+                document.documentElement.dir = 'rtl';
+                document.getElementById('main-title').innerText = 'متجر مواد البناء';
+                document.getElementById('sub-title').innerText = 'کۆگای بیناسازی';
+                document.getElementById('marquee-text').innerText = '🌟 أهلاً بكم في متجر مواد البناء • أفضل جودة وأنسب الأسعار • يرجى أخذ لقطة شاشة للمنتج أو إرسال الكود للطلب';
+                document.getElementById('visitor-label').innerText = 'الزوار:';
+                document.getElementById('live-label').innerText = 'المتواجدون الآن:';
+                document.getElementById('admin-btn-text').innerText = 'لوحة التحكم';
+            } else {
+                document.documentElement.dir = 'rtl';
+                document.getElementById('main-title').innerText = 'کۆگای بیناسازی';
+                document.getElementById('sub-title').innerText = 'متجر مواد البناء';
+                document.getElementById('marquee-text').innerText = '🌟 بەخێربێن بۆ کۆگای بیناسازی • باشترین کوالێتی و گونجاوترین نرخ • تکایە سکریپشۆتی کاڵاکە بگرە یان کۆدەکەی بنێرە بۆ داواکردن';
+                document.getElementById('visitor-label').innerText = 'سەردانیکەران:';
+                document.getElementById('live-label').innerText = 'ئێستا لە سایت:';
+                document.getElementById('admin-btn-text').innerText = 'بەشی ئەدمین';
+            }
+            renderProducts();
+        }
+    </script>
+</body>
+</html>
